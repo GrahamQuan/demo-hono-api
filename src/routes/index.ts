@@ -1,8 +1,7 @@
-import { Hono } from 'hono';
 import posts from './posts/posts.controller';
-import type { AppEnv } from '../types/app-context';
+import { createRouter } from '@/lib/create-app';
 
-const routes = new Hono<AppEnv>();
+const routes = createRouter();
 
 routes.get('/health', (c) => {
   return c.text('ok');

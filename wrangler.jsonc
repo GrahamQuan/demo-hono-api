@@ -3,12 +3,10 @@
   "name": "demo-hono-api",
   "main": "src/index.ts",
   "compatibility_date": "2025-08-03",
-  // "compatibility_flags": [
-  //   "nodejs_compat"
-  // ],
-  "vars": {
-    "NODE_ENV": "development"
-  }
+  "compatibility_flags": ["nodejs_compat"]
+  // "vars": {
+  //   "NODE_ENV": "development"
+  // }
   // "kv_namespaces": [
   //   {
   //     "binding": "MY_KV_NAMESPACE",
