@@ -1,13 +1,9 @@
-import { connectDb } from '@/db';
+// import { db } from '@/db';
 import { createMiddleware } from 'hono/factory';
 import type { AppEnv } from '@/types/app-context';
 
 export const withDatabase = createMiddleware<AppEnv>(async (c, next) => {
-  // Connect to database
-  const db = await connectDb();
-
-  // add db to context
-  c.set('db', db);
+  // c.set('db', db);
 
   await next();
 });

@@ -1,9 +1,8 @@
 import { posts } from '@/db/schema';
-import { connectDb } from '@/db';
+import { db } from '@/db';
 import { seed } from 'drizzle-seed';
 
 export const seedPosts = async () => {
-  const db = await connectDb();
   await seed(db, { posts }, { count: 10 }).refine((f) => ({
     posts: {
       columns: {

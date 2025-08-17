@@ -12,7 +12,6 @@ const EnvSchema = z.object({
 export type EnvSchema = z.infer<typeof EnvSchema>;
 
 try {
-  console.log('process.env', process.env);
   EnvSchema.parse(process.env);
 } catch (error) {
   if (error instanceof ZodError) {

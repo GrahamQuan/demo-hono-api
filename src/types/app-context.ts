@@ -1,10 +1,10 @@
 import type { Context } from 'hono';
-import type { Database } from '@/db/connect-db';
+// import type { Database } from '@/db';
 import { EnvSchema } from '@/lib/env';
 
 export type AppEnv = {
   Variables: {
-    db: Database;
+    // db: Database;
     session: string;
   };
   Bindings: {} & EnvSchema;

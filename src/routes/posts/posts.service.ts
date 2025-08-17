@@ -1,33 +1,18 @@
-import type { AppContext } from '../../types/app-context';
-import { postBodySchema } from './posts.schema';
+import type { PostBodySchema } from './posts.schema';
 import { z } from 'zod';
 import { posts } from '@/db/schema/posts';
-import { eq } from 'drizzle-orm';
+import { eq, isNull } from 'drizzle-orm';
+import { db } from '@/db';
 
-const PostSchema = postBodySchema.extend({
-  id: z.string(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
-  archivedAt: z.date().nullable().optional(),
-});
-
-export const getAllPosts = async (
-  c: AppContext
-): Promise<z.infer<typeof PostSchema>[]> => {
-  const db = c.get('db');
-
-  const result = await db.select().from(posts);
-  // .where(eq(posts.archivedAt, null));
+export const getAllPosts = async (): Promise<z.infer<typeof posts>[]> => {
+  const result = await db.select().from(posts).where(isNull(posts.archivedAt));
 
   return result;
 };
 
 export const getPostById = async (
-  c: AppContext,
   id: string
-): Promise<z.infer<typeof PostSchema>> => {
-  const db = c.get('db');
-
+): Promise<z.infer<typeof posts>> => {
   const result = await db.select().from(posts).where(eq(posts.id, id));
 
   if (result.length === 0) {
@@ -38,11 +23,8 @@ export const getPostById = async (
 };
 
 export const createPost = async (
-  c: AppContext,
-  post: z.infer<typeof postBodySchema>
-): Promise<z.infer<typeof PostSchema>> => {
-  const db = c.get('db');
-
+  post: PostBodySchema
+): Promise<z.infer<typeof posts>> => {
   const result = await db
     .insert(posts)
     .values({
@@ -55,12 +37,9 @@ export const createPost = async (
 };
 
 export const updatePost = async (
-  c: AppContext,
   id: string,
-  post: z.infer<typeof postBodySchema>
-): Promise<z.infer<typeof PostSchema>> => {
-  const db = c.get('db');
-
+  post: PostBodySchema
+): Promise<z.infer<typeof posts>> => {
   const result = await db
     .update(posts)
     .set({
@@ -78,9 +57,7 @@ export const updatePost = async (
   return result[0];
 };
 
-export const deletePost = async (c: AppContext, id: string): Promise<void> => {
-  const db = c.get('db');
-
+export const deletePost = async (id: string): Promise<void> => {
   const result = await db
     .update(posts)
     .set({
