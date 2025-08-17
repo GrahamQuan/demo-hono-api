@@ -12,6 +12,7 @@ import {
   deletePost,
 } from './posts.service';
 import { createRouter } from '@/lib/create-app';
+import { withAuth } from '@/middlewares/with-auth';
 
 const postsRouter = createRouter();
 
@@ -27,14 +28,20 @@ postsRouter.get('/:id', zValidator('param', postParamSchema), async (c) => {
   return c.json({ message: `Get post ${id}`, data: post });
 });
 
-postsRouter.post('/', zValidator('json', postBodySchema), async (c) => {
-  const body = await c.req.json<PostBodySchema>();
-  const newPost = await createPost(body);
-  return c.json({ message: 'Create post', data: newPost });
-});
+postsRouter.post(
+  '/',
+  withAuth,
+  zValidator('json', postBodySchema),
+  async (c) => {
+    const body = await c.req.json<PostBodySchema>();
+    const newPost = await createPost(body);
+    return c.json({ message: 'Create post', data: newPost });
+  }
+);
 
 postsRouter.put(
   '/:id',
+  withAuth,
   zValidator('param', postParamSchema),
   zValidator('json', postBodySchema),
   async (c) => {
@@ -45,10 +52,15 @@ postsRouter.put(
   }
 );
 
-postsRouter.delete('/:id', zValidator('param', postParamSchema), async (c) => {
-  const id = c.req.param('id');
-  await deletePost(id);
-  return c.json({ message: `Delete post ${id}` });
-});
+postsRouter.delete(
+  '/:id',
+  withAuth,
+  zValidator('param', postParamSchema),
+  async (c) => {
+    const id = c.req.param('id');
+    await deletePost(id);
+    return c.json({ message: `Delete post ${id}` });
+  }
+);
 
 export default postsRouter;

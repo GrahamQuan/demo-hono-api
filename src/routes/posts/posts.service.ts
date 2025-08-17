@@ -1,6 +1,6 @@
 import type { PostBodySchema } from './posts.schema';
 import { z } from 'zod';
-import { posts } from '@/db/schema/posts';
+import { posts } from '@/db/schema';
 import { eq, isNull } from 'drizzle-orm';
 import { db } from '@/db';
 

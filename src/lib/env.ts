@@ -5,7 +5,20 @@ import { ZodError, z } from 'zod';
 expand(config({ path: '.dev.vars' }));
 
 const EnvSchema = z.object({
+  // database
   DATABASE_URL: z.string(),
+  // cache
+  CACHE_URL: z.string(),
+  // auth
+  TOTP_SECRET: z.string(),
+  AUTH_SECRET: z.string(),
+  AUTH_GOOGLE_CLIENT_ID: z.string(),
+  AUTH_GOOGLE_CLIENT_SECRET: z.string(),
+  // email
+  RESEND_API_KEY: z.string(),
+  EMAIL_FROM: z.string(),
+  WEBSITE_NAME: z.string(),
+  WEBSITE_URL: z.string(),
   // NODE_ENV: z.enum(['development', 'production']),
 });
 
