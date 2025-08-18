@@ -1,8 +1,8 @@
 import auth from '@/routes/auth';
 import posts from '@/routes/posts/posts.controller';
-import { createRouter } from '@/lib/create-app';
+import { createAppRouter } from '@/lib/create-app';
 
-const routes = createRouter();
+const routes = createAppRouter();
 
 routes.get('/health', (c) => {
   return c.text('ok');

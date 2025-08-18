@@ -5,6 +5,8 @@ import { ZodError, z } from 'zod';
 expand(config({ path: '.dev.vars' }));
 
 const EnvSchema = z.object({
+  // env
+  NODE_ENV: z.enum(['development', 'production']),
   // database
   DATABASE_URL: z.string(),
   // cache
@@ -19,7 +21,6 @@ const EnvSchema = z.object({
   EMAIL_FROM: z.string(),
   WEBSITE_NAME: z.string(),
   WEBSITE_URL: z.string(),
-  // NODE_ENV: z.enum(['development', 'production']),
 });
 
 export type EnvSchema = z.infer<typeof EnvSchema>;

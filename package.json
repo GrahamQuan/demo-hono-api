@@ -12,6 +12,9 @@
     "db:seed": "tsx src/db/seed/index.ts",
     "lint": "oxlint"
   },
+  "lint-staged": {
+    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
+  },
   "dependencies": {
     "@hono/zod-validator": "^0.7.2",
     "@react-email/components": "^0.5.0",

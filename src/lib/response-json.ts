@@ -5,7 +5,7 @@ export const responseJson = <T extends any>(
   { msg, data }: { msg: string; data: T }
 ) => {
   return c.json({
-    status: c.status,
+    code: c.status,
     message: msg,
     data,
   });

@@ -11,10 +11,10 @@ import {
   updatePost,
   deletePost,
 } from './posts.service';
-import { createRouter } from '@/lib/create-app';
-import { withAuth } from '@/middlewares/with-auth';
+import { createAppRouter } from '@/lib/create-app';
+import { authenticate } from '@/middlewares/authenticate';
 
-const postsRouter = createRouter();
+const postsRouter = createAppRouter();
 
 postsRouter.get('/', async (c) => {
   const allPosts = await getAllPosts();
@@ -30,7 +30,7 @@ postsRouter.get('/:id', zValidator('param', postParamSchema), async (c) => {
 
 postsRouter.post(
   '/',
-  withAuth,
+  authenticate,
   zValidator('json', postBodySchema),
   async (c) => {
     const body = await c.req.json<PostBodySchema>();
@@ -41,7 +41,7 @@ postsRouter.post(
 
 postsRouter.put(
   '/:id',
-  withAuth,
+  authenticate,
   zValidator('param', postParamSchema),
   zValidator('json', postBodySchema),
   async (c) => {
@@ -54,7 +54,7 @@ postsRouter.put(
 
 postsRouter.delete(
   '/:id',
-  withAuth,
+  authenticate,
   zValidator('param', postParamSchema),
   async (c) => {
     const id = c.req.param('id');
