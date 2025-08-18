@@ -1,4 +1,4 @@
-import { HTTP_STATUS_CODE } from '@/constants/http-code';
+import { HTTP_STATUS_CODE } from '@/constants/http-status-code';
 import env from '@/lib/env';
 import type { ErrorHandler } from 'hono';
 import type { ContentfulStatusCode } from 'hono/utils/http-status';

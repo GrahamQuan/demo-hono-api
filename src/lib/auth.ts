@@ -9,7 +9,7 @@ import { hashPassword, verifyPassword } from '@/encryption/password';
 import env from '@/lib/env';
 
 export const auth = betterAuth({
-  secret: env.AUTH_SECRET,
+  secret: env.AUTH_BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, {
     provider: 'pg',
     schema,

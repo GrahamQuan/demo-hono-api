@@ -1,4 +1,4 @@
-import { HTTP_STATUS_CODE } from '@/constants/http-code.js';
+import { HTTP_STATUS_CODE } from '@/constants/http-status-code.js';
 import type { NotFoundHandler } from 'hono';
 
 export const notFound: NotFoundHandler = (c) => {

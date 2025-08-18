@@ -1,19 +1,28 @@
+# Environment
+NODE_ENV="development"
+
 # Database
 DATABASE_URL="postgresql://xxx"
 
 # Cache
 CACHE_URL="rediss://xxx"
 
-# Environment
-NODE_ENV="devlopment"
-
 # Auth
+AUTH_TOTP_SECRET="xxx"
+AUTH_BETTER_AUTH_SECRET="xxx"
 AUTH_GOOGLE_CLIENT_ID="xxx"
 AUTH_GOOGLE_CLIENT_SECRET="xxx"
-AUTH_SECRET="xxx"
 
 # Email
-RESEND_API_KEY="xxx"
+EMAIL_RESEND_API_KEY="xxx"
 EMAIL_FROM="noreply@example.com"
-WEBSITE_NAME="Example App"
-WEBSITE_URL="https://www.example.com"
+EMAIL_WEBSITE_NAME="Example App"
+EMAIL_WEBSITE_URL="https://www.example.com"
+
+# Bucket
+BUCKET_NAME="xxx"
+BUCKET_REGION="xxx"
+BUCKET_ENDPOINT="https://www.example.com"
+BUCKET_ACCESS_KEY_ID="xxx"
+BUCKET_SECRET_ACCESS_KEY="xxx"
+BUCKET_PUBLIC_URL="https://www.example.com"

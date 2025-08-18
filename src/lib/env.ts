@@ -12,15 +12,22 @@ const EnvSchema = z.object({
   // cache
   CACHE_URL: z.string(),
   // auth
-  TOTP_SECRET: z.string(),
-  AUTH_SECRET: z.string(),
+  AUTH_TOTP_SECRET: z.string(),
+  AUTH_BETTER_AUTH_SECRET: z.string(),
   AUTH_GOOGLE_CLIENT_ID: z.string(),
   AUTH_GOOGLE_CLIENT_SECRET: z.string(),
   // email
-  RESEND_API_KEY: z.string(),
+  EMAIL_RESEND_API_KEY: z.string(),
   EMAIL_FROM: z.string(),
-  WEBSITE_NAME: z.string(),
-  WEBSITE_URL: z.string(),
+  EMAIL_WEBSITE_NAME: z.string(),
+  EMAIL_WEBSITE_URL: z.string(),
+  // bucket
+  BUCKET_NAME: z.string(),
+  BUCKET_REGION: z.string(),
+  BUCKET_ENDPOINT: z.string(),
+  BUCKET_ACCESS_KEY_ID: z.string(),
+  BUCKET_SECRET_ACCESS_KEY: z.string(),
+  BUCKET_PUBLIC_URL: z.string(),
 });
 
 export type EnvSchema = z.infer<typeof EnvSchema>;

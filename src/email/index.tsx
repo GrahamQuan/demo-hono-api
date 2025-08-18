@@ -6,7 +6,7 @@ import {
 import env from '@/lib/env';
 import VerifyCodeEmail from './template/verify-code-email';
 
-export const resend = new Resend(env.RESEND_API_KEY);
+export const resend = new Resend(env.EMAIL_RESEND_API_KEY);
 
 export const sendVerificationEmail = async ({
   email,

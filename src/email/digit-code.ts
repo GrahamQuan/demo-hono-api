@@ -7,7 +7,7 @@ export async function generateEmailCode(
   email: string,
   digits = 6
 ): Promise<{ code: string; expiresAt: number }> {
-  const code = TOTP.generate(env.TOTP_SECRET, { digits });
+  const code = TOTP.generate(env.AUTH_TOTP_SECRET, { digits });
   const key = `verification:${email}`;
 
   // Store the verification code, expires in 10 minutes

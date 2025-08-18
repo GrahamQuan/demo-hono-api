@@ -1,12 +1,12 @@
 import type { AppContext } from '../types/app-context';
 
-export const responseJson = <T extends any>(
+export const contextJson = <T extends any>(
   c: AppContext,
-  { msg, data }: { msg: string; data: T }
+  { message, data }: { message: string; data: T }
 ) => {
   return c.json({
     code: c.status,
-    message: msg,
+    message,
     data,
   });
 };
