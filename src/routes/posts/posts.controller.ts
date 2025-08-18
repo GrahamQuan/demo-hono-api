@@ -30,8 +30,8 @@ postsRouter.get('/:id', zValidator('param', postParamSchema), async (c) => {
 
 postsRouter.post(
   '/',
-  authenticate,
   zValidator('json', postBodySchema),
+  authenticate,
   async (c) => {
     const body = await c.req.json<PostBodySchema>();
     const newPost = await createPost(body);
@@ -41,9 +41,9 @@ postsRouter.post(
 
 postsRouter.put(
   '/:id',
-  authenticate,
   zValidator('param', postParamSchema),
   zValidator('json', postBodySchema),
+  authenticate,
   async (c) => {
     const id = c.req.param('id');
     const body = await c.req.json<PostBodySchema>();
@@ -54,8 +54,8 @@ postsRouter.put(
 
 postsRouter.delete(
   '/:id',
-  authenticate,
   zValidator('param', postParamSchema),
+  authenticate,
   async (c) => {
     const id = c.req.param('id');
     await deletePost(id);

@@ -1,4 +1,5 @@
 import { HTTP_STATUS_CODE } from '@/constants/http-code';
+import env from '@/lib/env';
 import type { ErrorHandler } from 'hono';
 import type { ContentfulStatusCode } from 'hono/utils/http-status';
 
@@ -9,13 +10,12 @@ export const onError: ErrorHandler = (err, c) => {
     currentStatus !== HTTP_STATUS_CODE.OK
       ? (currentStatus as ContentfulStatusCode)
       : HTTP_STATUS_CODE.INTERNAL_SERVER_ERROR;
-  // eslint-disable-next-line node/prefer-global/process
-  const env = c.env?.NODE_ENV || process.env?.NODE_ENV;
+
   return c.json(
     {
       message: err.message,
 
-      stack: env === 'production' ? undefined : err.stack,
+      stack: env.NODE_ENV === 'production' ? undefined : err.stack,
     },
     statusCode
   );

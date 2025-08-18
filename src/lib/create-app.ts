@@ -4,8 +4,9 @@ import { createMiddleware } from 'hono/factory';
 import type { AppEnv } from '@/types/app-context';
 import { onError } from '@/middlewares/on-error';
 import { notFound } from '@/middlewares/not-found';
-import { logger } from 'hono/logger';
+
 import { cors } from 'hono/cors';
+import { logger } from '@/middlewares/logger';
 
 export const createApp = () => {
   const app = new Hono<AppEnv>();

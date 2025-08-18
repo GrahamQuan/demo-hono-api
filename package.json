@@ -23,7 +23,10 @@
     "dotenv-expand": "^12.0.2",
     "drizzle-orm": "^0.44.4",
     "hono": "^4.9.1",
+    "hono-pino": "^0.10.2",
     "ioredis": "^5.7.0",
+    "pino": "^9.9.0",
+    "pino-pretty": "^13.1.1",
     "resend": "^6.0.1",
     "totp-generator": "^1.0.0",
     "zod": "^4.0.17"
