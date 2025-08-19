@@ -1,5 +1,5 @@
 import { HTTP_STATUS_CODE } from '@/constants/http-status-code';
-import { auth } from '@/lib/auth';
+import { auth } from '@/auth';
 import { createAppMiddleware } from '@/lib/create-app';
 import { tryCatch } from '@/lib/promise-utils';
 

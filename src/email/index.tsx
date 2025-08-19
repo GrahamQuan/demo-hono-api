@@ -21,7 +21,7 @@ export const sendVerificationEmail = async ({
   const { data, error } = await resend.emails.send({
     from: env.EMAIL_FROM,
     to: email,
-    subject: 'Sign in to your account',
+    subject: 'Verify your email',
     react: <VerifyCodeEmail verificationCode={code} />,
   });
 

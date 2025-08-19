@@ -3,21 +3,22 @@ import { cache } from '@/cache';
 import { TOTP } from 'totp-generator';
 
 // Generate and store the verification code
-export async function generateEmailCode(
+export async function generateDigitCode(
   email: string,
   digits = 6
 ): Promise<{ code: string; expiresAt: number }> {
   const code = TOTP.generate(env.AUTH_TOTP_SECRET, { digits });
   const key = `verification:${email}`;
 
-  // Store the verification code, expires in 10 minutes
-  await cache.set(key, code.otp, 'EX', 600);
+  // Store the verification code, expires in 5 minutes
+  // await cache.set(key, code.otp, 'EX', 300);
+  await cache.set({ key, value: code.otp, mode: 'EX', ttl: 300 });
 
   return { code: code.otp, expiresAt: code.expires };
 }
 
 // Verify the verification code submitted by the user
-export async function verifyEmailCode(
+export async function verifyDigitCode(
   email: string,
   userSubmittedCode: string
 ): Promise<{ valid: boolean; message: string }> {

@@ -2,11 +2,12 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@/db';
 import * as schema from '@/db/schema';
-import { tryCatch } from './promise-utils';
-import { generateEmailCode } from '@/email/digit-code';
+import { tryCatch } from '../lib/promise-utils';
+import { generateDigitCode } from '@/generator/digit-code';
 import { sendVerificationEmail } from '@/email';
-import { hashPassword, verifyPassword } from '@/encryption/password';
+import { hashPassword, verifyPassword } from '@/generator/password';
 import env from '@/lib/env';
+import { emailOTP } from 'better-auth/plugins';
 
 export const auth = betterAuth({
   secret: env.AUTH_BETTER_AUTH_SECRET,
@@ -39,7 +40,7 @@ export const auth = betterAuth({
     sendVerificationEmail: async ({ user }) => {
       const userEmail = user.email as string;
       const [generateErr, generateData] = await tryCatch(
-        generateEmailCode(userEmail)
+        generateDigitCode(userEmail)
       );
       if (generateErr) {
         throw generateErr;
@@ -63,4 +64,17 @@ export const auth = betterAuth({
       clientSecret: env.AUTH_GOOGLE_CLIENT_SECRET,
     },
   },
+  plugins: [
+    emailOTP({
+      async sendVerificationOTP({ email, otp, type }) {
+        if (type === 'sign-in') {
+          // Send the OTP for sign in
+        } else if (type === 'email-verification') {
+          // Send the OTP for email verification
+        } else {
+          // Send the OTP for password reset
+        }
+      },
+    }),
+  ],
 });

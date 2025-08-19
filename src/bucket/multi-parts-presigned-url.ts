@@ -63,28 +63,29 @@ export async function createMultiPartsPresignedUrl({
     throw new Error('Failed to initialize multipart upload');
   }
 
-  // Generate a presigned URL for each part
-  const presignedUrlList = [];
+  // Generate presigned URLs for all parts in parallel
+  const presignedUrlList = await Promise.all(
+    Array.from({ length: partCount }, async (_, index) => {
+      // AWS S3 API PartNumber starts from 1
+      const partNumber = index + 1;
 
-  // partNumber start from 1
-  // because AWS S3 API PartNumber start from 1, max is 10000
-  for (let partNumber = 1; partNumber <= partCount; partNumber++) {
-    const command = new UploadPartCommand({
-      Bucket: bucketName,
-      Key: key,
-      UploadId: uploadId,
-      PartNumber: partNumber,
-    });
+      const command = new UploadPartCommand({
+        Bucket: bucketName,
+        Key: key,
+        UploadId: uploadId,
+        PartNumber: partNumber,
+      });
 
-    const presignedUrl = await getSignedUrl(BucketClient, command, {
-      expiresIn: 3600,
-    });
+      const presignedUrl = await getSignedUrl(BucketClient, command, {
+        expiresIn: 3600,
+      });
 
-    presignedUrlList.push({
-      presignedUrl,
-      partNumber,
-    });
-  }
+      return {
+        presignedUrl,
+        partNumber,
+      };
+    })
+  );
 
   return {
     key,
