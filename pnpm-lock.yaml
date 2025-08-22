@@ -14,6 +14,9 @@ importers:
       '@aws-sdk/s3-request-presigner':
         specifier: ^3.864.0
         version: 3.864.0
+      '@hono/node-server':
+        specifier: ^1.19.0
+        version: 1.19.0(hono@4.9.1)
       '@hono/zod-validator':
         specifier: ^0.7.2
         version: 0.7.2(hono@4.9.1)(zod@4.0.17)
@@ -72,6 +75,9 @@ importers:
       tsx:
         specifier: ^4.20.4
         version: 4.20.4
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
       wrangler:
         specifier: ^4.30.0
         version: 4.30.0
@@ -588,6 +594,12 @@ packages:
 
   '@hexagon/base64@1.1.28':
     resolution: {integrity: sha512-lhqDEAvWixy3bZ+UOYbPwUbBkwBq5C1LAJ/xPC8Oi+lL54oyakv/npbA0aU2hgCsx/1NUd4IBvV03+aUBWxerw==}
+
+  '@hono/node-server@1.19.0':
+    resolution: {integrity: sha512-1k8/8OHf5VIymJEcJyVksFpT+AQ5euY0VA5hUkCnlKpD4mr8FSbvXaHblxeTTEr90OaqWzAkQaqD80qHZQKxBA==}
+    engines: {node: '>=18.14.1'}
+    peerDependencies:
+      hono: ^4
 
   '@hono/zod-validator@0.7.2':
     resolution: {integrity: sha512-ub5eL/NeZ4eLZawu78JpW/J+dugDAYhwqUIdp9KYScI6PZECij4Hx4UsrthlEUutqDDhPwRI0MscUfNkvn/mqQ==}
@@ -1764,6 +1776,11 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  typescript@5.9.2:
+    resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   ufo@1.6.1:
     resolution: {integrity: sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==}
 
@@ -2514,6 +2531,10 @@ snapshots:
     optional: true
 
   '@hexagon/base64@1.1.28': {}
+
+  '@hono/node-server@1.19.0(hono@4.9.1)':
+    dependencies:
+      hono: 4.9.1
 
   '@hono/zod-validator@0.7.2(hono@4.9.1)(zod@4.0.17)':
     dependencies:
@@ -3734,6 +3755,8 @@ snapshots:
       get-tsconfig: 4.10.1
     optionalDependencies:
       fsevents: 2.3.3
+
+  typescript@5.9.2: {}
 
   ufo@1.6.1: {}
 

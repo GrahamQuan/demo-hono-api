@@ -3,7 +3,10 @@
   "name": "demo-hono-api",
   "main": "src/index.ts",
   "compatibility_date": "2025-08-03",
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "dev": {
+    "port": 8787
+  }
   // "vars": {
   //   "NODE_ENV": "development"
   // }

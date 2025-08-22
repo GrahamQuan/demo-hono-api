@@ -3,15 +3,34 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "build": "echo '<!> update your package.json <!>' && exit 1",
+    "start": "echo '<!> update your package.json <!>' && exit 1",
+    "deploy": "wrangler deploy__minify",
+    "typegen": "wrangler types__env-interface CloudflareBindings",
     "types:check": "tsc --noEmit",
+    "lint": "oxlint",
+    "____cloudflare_worker____": "",
+    "cloudflare:worker:dev": "wrangler dev",
+    "cloudflare:worker:deploy": "wrangler deploy__minify",
+    "cloudflare:worker:typegen": "wrangler types__env-interface CloudflareBindings",
+    "____nodejs____": "",
+    "node:dev": "tsx watch src/index.ts",
+    "node:build": "tsc",
+    "node:start": "node dist/index.js",
+    "____bun____": "",
+    "bun:dev": "bun --watch src/index.ts",
+    "bun:build": "tsc",
+    "bun:start": "bun run dist/index.js",
+    "____nextjs____": "",
+    "nextjs:dev": "next dev",
+    "nextjs:build": "next build",
+    "nextjs:start": "next start",
+    "____db____": "",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:push": "drizzle-kit push",
-    "db:seed": "tsx src/db/seed/index.ts",
-    "lint": "oxlint"
+    "db:seed": "tsx src/db/seed/index.ts"
   },
   "lint-staged": {
     "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
@@ -19,6 +38,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.864.0",
     "@aws-sdk/s3-request-presigner": "^3.864.0",
+    "@hono/node-server": "^1.19.0",
     "@hono/zod-validator": "^0.7.2",
     "@react-email/components": "^0.5.0",
     "better-auth": "^1.3.6",
@@ -40,6 +60,7 @@
     "drizzle-seed": "^0.3.1",
     "oxlint": "^1.12.0",
     "tsx": "^4.20.4",
+    "typescript": "^5.9.2",
     "wrangler": "^4.30.0"
   },
   "packageManager": "pnpm@10.5.2"

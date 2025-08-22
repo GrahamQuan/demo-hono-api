@@ -3,7 +3,7 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@/db';
 import * as schema from '@/db/schema';
 import { tryCatch } from '../lib/promise-utils';
-import { generateDigitCode } from '@/generator/digit-code';
+// import { generateDigitCode } from '@/generator/digit-code';
 import { sendVerificationEmail } from '@/email';
 import { hashPassword, verifyPassword } from '@/generator/password';
 import env from '@/lib/env';
@@ -39,23 +39,23 @@ export const auth = betterAuth({
     // sendVerificationEmail: async ({ user, url, token }) => {
     sendVerificationEmail: async ({ user }) => {
       const userEmail = user.email as string;
-      const [generateErr, generateData] = await tryCatch(
-        generateDigitCode(userEmail)
-      );
-      if (generateErr) {
-        throw generateErr;
-      }
-      const { code } = generateData;
+      // const [generateErr, generateData] = await tryCatch(
+      //     generateDigitCode(userEmail)
+      // );
+      // if (generateErr) {
+      //   throw generateErr;
+      // }
+      // const { code } = generateData;
       // const [sendErr, sendData] = await tryCatch(
-      const [sendErr] = await tryCatch(
-        sendVerificationEmail({
-          email: userEmail,
-          code,
-        })
-      );
-      if (sendErr) {
-        throw sendErr;
-      }
+      // const [sendErr] = await tryCatch(
+      //   sendVerificationEmail({
+      //     email: userEmail,
+      //     code,
+      //   })
+      // );
+      // if (sendErr) {
+      //   throw sendErr;
+      // }
     },
   },
   socialProviders: {

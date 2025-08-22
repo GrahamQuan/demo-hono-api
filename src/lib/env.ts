@@ -2,11 +2,12 @@ import { config } from 'dotenv';
 import { expand } from 'dotenv-expand';
 import { ZodError, z } from 'zod';
 
-expand(config({ path: '.dev.vars' }));
+expand(config({ path: '.env' }));
 
 const EnvSchema = z.object({
   // env
   NODE_ENV: z.enum(['development', 'production']),
+  PORT: z.coerce.number().default(8787),
   // database
   DATABASE_URL: z.string(),
   // cache
