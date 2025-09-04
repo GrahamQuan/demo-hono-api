@@ -2,15 +2,21 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@/db';
 import * as schema from '@/db/schema';
-import { tryCatch } from '../lib/promise-utils';
+// import { tryCatch } from '../lib/promise-utils';
 // import { generateDigitCode } from '@/generator/digit-code';
-import { sendVerificationEmail } from '@/email';
+// import { sendVerificationEmail } from '@/email';
 import { hashPassword, verifyPassword } from '@/generator/password';
 import env from '@/lib/env';
-import { emailOTP } from 'better-auth/plugins';
+import { captcha, emailOTP } from 'better-auth/plugins';
 
 export const auth = betterAuth({
+  baseURL: env.API_URL, // important
   secret: env.AUTH_BETTER_AUTH_SECRET,
+  trustedOrigins: [
+    env.WEBSITE_URL,
+    'http://localhost:3000',
+    'http://localhost:3001',
+  ],
   database: drizzleAdapter(db, {
     provider: 'pg',
     schema,
@@ -76,5 +82,11 @@ export const auth = betterAuth({
         }
       },
     }),
+    captcha({
+      provider: 'cloudflare-turnstile',
+      secretKey: env.AUTH_TURNSTILE_SECRET_KEY,
+    }),
   ],
 });
+
+export type Auth = typeof auth;

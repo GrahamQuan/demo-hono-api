@@ -5,9 +5,11 @@ import { ZodError, z } from 'zod';
 expand(config({ path: '.env' }));
 
 const EnvSchema = z.object({
-  // env
+  // app
   NODE_ENV: z.enum(['development', 'production']),
   PORT: z.coerce.number().default(8787),
+  API_URL: z.string(),
+  WEBSITE_URL: z.string(),
   // database
   DATABASE_URL: z.string(),
   // cache
@@ -17,6 +19,7 @@ const EnvSchema = z.object({
   AUTH_BETTER_AUTH_SECRET: z.string(),
   AUTH_GOOGLE_CLIENT_ID: z.string(),
   AUTH_GOOGLE_CLIENT_SECRET: z.string(),
+  AUTH_TURNSTILE_SECRET_KEY: z.string(),
   // email
   EMAIL_RESEND_API_KEY: z.string(),
   EMAIL_FROM: z.string(),

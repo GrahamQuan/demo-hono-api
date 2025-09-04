@@ -7,6 +7,7 @@ import { notFound } from '@/middlewares/not-found';
 
 import { cors } from 'hono/cors';
 import { logger } from '@/middlewares/logger';
+import env from './env';
 
 export const createApp = () => {
   const app = new Hono<AppEnv>();
@@ -15,7 +16,21 @@ export const createApp = () => {
   app.notFound(notFound);
 
   app.use('*', logger());
-  app.use('*', cors());
+  app.use(
+    '*',
+    cors({
+      origin: [
+        env.WEBSITE_URL,
+        'http://localhost:3000',
+        'http://localhost:3001',
+      ],
+      allowHeaders: ['Content-Type', 'Authorization', 'Cookie', 'Set-Cookie'],
+      allowMethods: ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
+      exposeHeaders: ['Content-Length', 'Set-Cookie'],
+      maxAge: 600,
+      credentials: true,
+    })
+  );
 
   return app;
 };
