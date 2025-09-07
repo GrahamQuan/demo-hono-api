@@ -2,7 +2,12 @@ import { config } from 'dotenv';
 import { expand } from 'dotenv-expand';
 import { ZodError, z } from 'zod';
 
-expand(config({ path: '.env' }));
+expand(
+  config({
+    // path: process.env.NODE_ENV === 'production' ? '.env' : '.env.development',
+    path: '.env',
+  })
+);
 
 const EnvSchema = z.object({
   // app

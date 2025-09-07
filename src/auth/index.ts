@@ -7,7 +7,8 @@ import * as schema from '@/db/schema';
 // import { sendVerificationEmail } from '@/email';
 import { hashPassword, verifyPassword } from '@/generator/password';
 import env from '@/lib/env';
-import { captcha, emailOTP } from 'better-auth/plugins';
+import { captcha, emailOTP, oneTap } from 'better-auth/plugins';
+import { v7 as uuidv7 } from 'uuid';
 
 export const auth = betterAuth({
   baseURL: env.API_URL, // important
@@ -21,6 +22,11 @@ export const auth = betterAuth({
     provider: 'pg',
     schema,
   }),
+  advanced: {
+    database: {
+      generateId: () => uuidv7(),
+    },
+  },
   emailAndPassword: {
     enabled: true,
     disableSignUp: false,
@@ -68,9 +74,11 @@ export const auth = betterAuth({
     google: {
       clientId: env.AUTH_GOOGLE_CLIENT_ID,
       clientSecret: env.AUTH_GOOGLE_CLIENT_SECRET,
+      redirectURI: `${env.API_URL}/api/auth/callback/google`,
     },
   },
   plugins: [
+    oneTap(),
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {
         if (type === 'sign-in') {
