@@ -3,26 +3,33 @@ import {
   type CreateEmailResponseSuccess,
   type ErrorResponse,
 } from 'resend';
-import env from '@/lib/env';
+import env from '../lib/env';
 import VerifyCodeEmail from './template/verify-code-email';
+import { render, pretty } from '@react-email/render';
 
-export const resend = new Resend(env.EMAIL_RESEND_API_KEY);
+const emailInstance = new Resend(env.EMAIL_RESEND_API_KEY);
 
 export const sendVerificationEmail = async ({
   email,
-  code,
+  otp,
 }: {
   email: string;
-  code: string;
+  otp: string;
 }): Promise<{
   data: CreateEmailResponseSuccess | null;
   error: ErrorResponse | null;
 }> => {
-  const { data, error } = await resend.emails.send({
+  const htmlTemplate = await pretty(
+    await render(<VerifyCodeEmail verificationCode={otp} />)
+  );
+
+  const { data, error } = await emailInstance.emails.send({
     from: env.EMAIL_FROM,
     to: email,
     subject: 'Verify your email',
-    react: <VerifyCodeEmail verificationCode={code} />,
+    // react: <VerifyCodeEmail verificationCode={otp} />,
+    // html: `<p>Your verification code is ${otp}</p>`,
+    html: htmlTemplate,
   });
 
   if (error) {

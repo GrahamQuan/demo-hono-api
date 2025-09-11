@@ -2,13 +2,12 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@/db';
 import * as schema from '@/db/schema';
-// import { tryCatch } from '../lib/promise-utils';
-// import { generateDigitCode } from '@/generator/digit-code';
-// import { sendVerificationEmail } from '@/email';
 import { hashPassword, verifyPassword } from '@/generator/password';
 import env from '@/lib/env';
-import { captcha, emailOTP, oneTap } from 'better-auth/plugins';
+import { captcha, emailOTP, oneTap, username } from 'better-auth/plugins';
 import { v7 as uuidv7 } from 'uuid';
+import { verifyTurnstileToken } from './verify-turnstile-token';
+import { sendVerificationEmail } from '@/email';
 
 export const auth = betterAuth({
   baseURL: env.API_URL, // important
@@ -48,26 +47,11 @@ export const auth = betterAuth({
   },
   emailVerification: {
     requireEmailVerification: true,
+    autoSignInAfterVerification: true,
     // sendVerificationEmail: async ({ user, url, token }) => {
-    sendVerificationEmail: async ({ user }) => {
+    sendVerificationEmail: async ({ user, url, token }) => {
       const userEmail = user.email as string;
-      // const [generateErr, generateData] = await tryCatch(
-      //     generateDigitCode(userEmail)
-      // );
-      // if (generateErr) {
-      //   throw generateErr;
-      // }
-      // const { code } = generateData;
-      // const [sendErr, sendData] = await tryCatch(
-      // const [sendErr] = await tryCatch(
-      //   sendVerificationEmail({
-      //     email: userEmail,
-      //     code,
-      //   })
-      // );
-      // if (sendErr) {
-      //   throw sendErr;
-      // }
+      console.log('Sending verification email', userEmail, url, token);
     },
   },
   socialProviders: {
@@ -80,20 +64,40 @@ export const auth = betterAuth({
   plugins: [
     oneTap(),
     emailOTP({
-      async sendVerificationOTP({ email, otp, type }) {
+      // overrideDefaultEmailVerification: true,
+      async sendVerificationOTP({ email, otp, type }, request) {
         if (type === 'sign-in') {
           // Send the OTP for sign in
+          // Send the OTP for email verification
+          const turnstileToken = request?.headers.get('x-turnstile-token');
+          if (!turnstileToken || !request) {
+            console.log('No turnstile token');
+            return;
+          }
+          const isTurnstileTokenValid = await verifyTurnstileToken({
+            token: turnstileToken,
+            request,
+          });
+
+          if (!isTurnstileTokenValid) {
+            console.log('Invalid turnstile token');
+            return;
+          }
+
+          await sendVerificationEmail({ email, otp });
         } else if (type === 'email-verification') {
           // Send the OTP for email verification
         } else {
           // Send the OTP for password reset
+          console.log('Sending OTP for password reset', email, otp);
         }
       },
     }),
-    captcha({
-      provider: 'cloudflare-turnstile',
-      secretKey: env.AUTH_TURNSTILE_SECRET_KEY,
-    }),
+    username(),
+    // captcha({
+    //   provider: 'cloudflare-turnstile',
+    //   secretKey: env.AUTH_TURNSTILE_SECRET_KEY,
+    // }),
   ],
 });
 
