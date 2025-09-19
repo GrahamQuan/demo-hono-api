@@ -27,8 +27,6 @@ export const sendVerificationEmail = async ({
     from: env.EMAIL_FROM,
     to: email,
     subject: 'Verify your email',
-    // react: <VerifyCodeEmail verificationCode={otp} />,
-    // html: `<p>Your verification code is ${otp}</p>`,
     html: htmlTemplate,
   });
 

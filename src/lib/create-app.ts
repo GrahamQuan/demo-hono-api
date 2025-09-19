@@ -12,6 +12,16 @@ import env from './env';
 export const createApp = () => {
   const app = new Hono<AppEnv>();
 
+  const corsOrigin: string[] = [env.WEBSITE_URL];
+
+  if (env.NODE_ENV === 'development') {
+    corsOrigin.push(
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:8787'
+    );
+  }
+
   app.onError(onError);
   app.notFound(notFound);
 
@@ -19,11 +29,7 @@ export const createApp = () => {
   app.use(
     '*',
     cors({
-      origin: [
-        env.WEBSITE_URL,
-        'http://localhost:3000',
-        'http://localhost:3001',
-      ],
+      origin: corsOrigin,
       allowHeaders: [
         'Content-Type',
         'Authorization',

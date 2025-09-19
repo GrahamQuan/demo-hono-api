@@ -4,7 +4,7 @@ import { db } from '@/db';
 import * as schema from '@/db/schema';
 import { hashPassword, verifyPassword } from '@/generator/password';
 import env from '@/lib/env';
-import { captcha, emailOTP, oneTap, username } from 'better-auth/plugins';
+import { emailOTP, oneTap } from 'better-auth/plugins';
 import { v7 as uuidv7 } from 'uuid';
 import { verifyTurnstileToken } from './verify-turnstile-token';
 import { sendVerificationEmail } from '@/email';
@@ -48,11 +48,7 @@ export const auth = betterAuth({
   emailVerification: {
     requireEmailVerification: true,
     autoSignInAfterVerification: true,
-    // sendVerificationEmail: async ({ user, url, token }) => {
-    sendVerificationEmail: async ({ user, url, token }) => {
-      const userEmail = user.email as string;
-      console.log('Sending verification email', userEmail, url, token);
-    },
+    sendOnSignUp: true,
   },
   socialProviders: {
     google: {
@@ -64,16 +60,19 @@ export const auth = betterAuth({
   plugins: [
     oneTap(),
     emailOTP({
-      // overrideDefaultEmailVerification: true,
+      overrideDefaultEmailVerification: true,
       async sendVerificationOTP({ email, otp, type }, request) {
+        // Verify turnstile token
+        const turnstileToken = request?.headers.get('x-turnstile-token');
+        if (!turnstileToken || !request) {
+          console.log('No turnstile token');
+          return;
+        }
+
         if (type === 'sign-in') {
           // Send the OTP for sign in
+        } else if (type === 'email-verification') {
           // Send the OTP for email verification
-          const turnstileToken = request?.headers.get('x-turnstile-token');
-          if (!turnstileToken || !request) {
-            console.log('No turnstile token');
-            return;
-          }
           const isTurnstileTokenValid = await verifyTurnstileToken({
             token: turnstileToken,
             request,
@@ -85,19 +84,12 @@ export const auth = betterAuth({
           }
 
           await sendVerificationEmail({ email, otp });
-        } else if (type === 'email-verification') {
-          // Send the OTP for email verification
         } else {
           // Send the OTP for password reset
           console.log('Sending OTP for password reset', email, otp);
         }
       },
     }),
-    username(),
-    // captcha({
-    //   provider: 'cloudflare-turnstile',
-    //   secretKey: env.AUTH_TURNSTILE_SECRET_KEY,
-    // }),
   ],
 });
 
