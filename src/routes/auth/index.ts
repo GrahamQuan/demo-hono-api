@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { createAppRouter } from '@/lib/create-app';
+import { createAppRouter } from '@/lib/factory';
 
 const authRouter = createAppRouter();
 

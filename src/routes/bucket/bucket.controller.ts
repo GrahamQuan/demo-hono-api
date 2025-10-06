@@ -1,5 +1,5 @@
 import createPresignedUrl from '@/bucket/presigned-url';
-import { createAppRouter } from '@/lib/create-app';
+import { createAppRouter } from '@/lib/factory';
 import { zValidator } from '@hono/zod-validator';
 import {
   BucketMultiPartsPresignedUrlCompleteSchema,

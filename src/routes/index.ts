@@ -1,7 +1,7 @@
 import auth from '@/routes/auth';
 import posts from '@/routes/posts/posts.controller';
 import bucket from '@/routes/bucket/bucket.controller';
-import { createAppRouter } from '@/lib/create-app';
+import { createAppRouter } from '@/lib/factory';
 
 const routes = createAppRouter();
 

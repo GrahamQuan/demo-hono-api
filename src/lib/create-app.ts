@@ -1,6 +1,4 @@
-import { Hono, type MiddlewareHandler } from 'hono';
-import { createMiddleware } from 'hono/factory';
-
+import { Hono } from 'hono';
 import type { AppEnv } from '@/types/app-context';
 import { onError } from '@/middlewares/on-error';
 import { notFound } from '@/middlewares/not-found';
@@ -8,6 +6,7 @@ import { notFound } from '@/middlewares/not-found';
 import { cors } from 'hono/cors';
 import { logger } from '@/middlewares/logger';
 import env from './env';
+import { withLocale } from '@/with-context/i18n';
 
 export const createApp = () => {
   const app = new Hono<AppEnv>();
@@ -26,6 +25,7 @@ export const createApp = () => {
   app.notFound(notFound);
 
   app.use('*', logger());
+  app.use('*', withLocale);
   app.use(
     '*',
     cors({
@@ -45,13 +45,4 @@ export const createApp = () => {
   );
 
   return app;
-};
-
-export const createAppRouter = () => {
-  const router = new Hono<AppEnv>();
-  return router;
-};
-
-export const createAppMiddleware = (middleware: MiddlewareHandler<AppEnv>) => {
-  return createMiddleware<AppEnv>(middleware);
 };

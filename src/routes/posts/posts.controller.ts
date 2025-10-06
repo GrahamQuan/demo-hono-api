@@ -11,7 +11,7 @@ import {
   updatePost,
   deletePost,
 } from './posts.service';
-import { createAppRouter } from '@/lib/create-app';
+import { createAppRouter } from '@/lib/factory';
 import { authenticate } from '@/middlewares/authenticate';
 
 const postsRouter = createAppRouter();

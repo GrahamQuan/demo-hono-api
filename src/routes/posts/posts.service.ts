@@ -4,24 +4,8 @@ import { posts } from '@/db/schema';
 import { eq, isNull, desc, asc } from 'drizzle-orm';
 import { db } from '@/db';
 
-export const getAllPosts = async ({
-  pageNum = 0,
-  pageSize = 10,
-  orderDirection = 'latest',
-}: {
-  pageNum?: number;
-  pageSize?: number;
-  orderDirection?: 'oldest' | 'latest';
-}): Promise<z.infer<typeof posts>[]> => {
-  const result = await db
-    .select()
-    .from(posts)
-    .where(isNull(posts.archivedAt))
-    .limit(pageSize)
-    .offset(pageNum * pageSize)
-    .orderBy(
-      orderDirection === 'latest' ? desc(posts.createdAt) : asc(posts.createdAt)
-    );
+export const getAllPosts = async (): Promise<z.infer<typeof posts>[]> => {
+  const result = await db.select().from(posts).where(isNull(posts.archivedAt));
 
   return result;
 };
